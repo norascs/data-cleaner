@@ -160,7 +160,6 @@
 <body>
     <div class="container">
         <h1>Data Cleaner</h1>
-        <!-- <p class="subtitle">Remove stray quotes, fix broken lines, and clean trailing commas</p> -->
 
         <div class="input-section">
             <label for="input">Paste Your Messy Data:</label>
@@ -192,37 +191,31 @@
             }
 
             let cleaned = input;
-            
-            // Remove all double quotes
+
             cleaned = cleaned.replace(/"/g, '');
-            
-            // Fix broken tuples - join lines that don't start with opening paren
+
             const lines = cleaned.split('\n');
             const fixedLines = [];
             let currentLine = '';
             
             for (let i = 0; i < lines.length; i++) {
                 const line = lines[i].trim();
-                
-                // If line starts with '(' it's a new tuple
+
                 if (line.startsWith('(')) {
                     if (currentLine) {
                         fixedLines.push(currentLine);
                     }
                     currentLine = line;
                 }
-                // Otherwise it's a continuation of the previous line
                 else if (line) {
                     currentLine += line;
                 }
             }
-            
-            // Don't forget the last line
+
             if (currentLine) {
                 fixedLines.push(currentLine);
             }
-            
-            // Remove trailing comma from the last line
+
             if (fixedLines.length > 0) {
                 const lastIndex = fixedLines.length - 1;
                 fixedLines[lastIndex] = fixedLines[lastIndex].replace(/,\s*$/, '');
@@ -231,8 +224,7 @@
             cleaned = fixedLines.join('\n');
 
             document.getElementById('output').value = cleaned;
-            
-            // Show stats
+
             const quotesRemoved = (input.match(/"/g) || []).length;
             const linesFixed = lines.length - fixedLines.length;
             const linesProcessed = fixedLines.length;
@@ -275,7 +267,6 @@
             }, 3000);
         }
 
-        // Auto-clean on paste (optional convenience feature)
         document.getElementById('input').addEventListener('paste', () => {
             setTimeout(cleanData, 100);
         });
